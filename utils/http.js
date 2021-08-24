@@ -1,6 +1,6 @@
 const dofetch = async (url, options) => {
-  const response = fetch(url, options);
-  const json = response.json();
+  const response = await fetch(url, options);
+  const json = await response.json();
   if (json.error) {
     throw new Error(json.message + ':' + json.error);
   } else if (!response.ok) {

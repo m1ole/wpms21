@@ -5,7 +5,8 @@ import ListItem from './ListItem';
 
 const List = (props) => {
   const {mediaArray} = useMedia();
-  console.log('mediaArray', mediaArray);
+  console.log('List: mediaArray', mediaArray);
+
   return (
     <FlatList
       data={mediaArray}
@@ -14,7 +15,5 @@ const List = (props) => {
     />
   );
 };
-
-List.propTypes = {};
 
 export default List;

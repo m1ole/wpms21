@@ -1,4 +1,5 @@
 import {useEffect, useState} from 'react';
+import {dofetch} from '../utils/http';
 import {baseUrl} from '../utils/variables';
 
 const useMedia = () => {
@@ -24,12 +25,16 @@ const useMedia = () => {
   };
 
   const loadSingleMedia = async (id) => {
-    const response = await fetch(baseUrl + 'media/' + id);
-    const tiedosto = await response.json();
-    return tiedosto;
+    try {
+      const tiedosto = await dofetch(baseUrl + 'media/' + id);
+      return tiedosto;
+    } catch (e) {
+      console.log('loadSingleMedia', e.message);
+      return {};
+    }
   };
 
-  return {mediaArray, loadSingleMedia};
+  return {mediaArray, loadSingleMedia, loadMedia};
 };
 
 export {useMedia};

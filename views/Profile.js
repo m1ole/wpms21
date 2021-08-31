@@ -1,10 +1,22 @@
 import React from 'react';
-import {StyleSheet, SafeAreaView, Text} from 'react-native';
+import {useContext} from 'react';
+import {StyleSheet, SafeAreaView, Text, Button} from 'react-native';
+import {MainContext} from '../contexts/MainContext';
+import PropTypes from 'prop-types';
 
 const Profile = (props) => {
+  const [isLoggedIn, setIsLoggedIn] = useContext(MainContext);
+  console.log('profile', isLoggedIn);
+  const logout = () => {
+    setIsLoggedIn(false);
+    if (!isLoggedIn) {
+      props.navigation.navigate('Login');
+    }
+  };
   return (
     <SafeAreaView style={styles.container}>
       <Text>Profile</Text>
+      <Button title={'Logout'} onPress={logout} />
     </SafeAreaView>
   );
 };
@@ -19,6 +31,8 @@ const styles = StyleSheet.create({
   },
 });
 
-Profile.propTypes = {};
+Profile.propTypes = {
+  navigation: PropTypes.object,
+};
 
 export default Profile;

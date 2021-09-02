@@ -1,27 +1,39 @@
 import React, {useContext, useEffect} from 'react';
-import {StyleSheet, View, Text, Button} from 'react-native';
+import {StyleSheet, View, Text} from 'react-native';
 import {MainContext} from '../contexts/MainContext';
 import PropTypes from 'prop-types';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useUser} from '../hooks/ApiHooks';
+import LoginForm from '../components/LoginForm';
+import RegisterForm from '../components/RegisterForm';
 
-const Login = (props) => {
-  const {isLoggedIn, setIsLoggedIn} = useContext(MainContext);
-  console.log('Login isLoggedIn', isLoggedIn);
+const Login = ({navigation}) => {
+  const {setIsLoggedIn} = useContext(MainContext);
+  const {checkToken} = useUser();
 
-  const logIn = async () => {
-    await AsyncStorage.setItem('userToken', 'token value');
-
+  /*   const doLogin = async () => {
+    try {
+      const tokenFromApi = await login({
+        username: 'john',
+        password: 'examplepass',
+      });
+    console.log('doLogin reponse', tokenFromApi);
+    await AsyncStorage.setItem('userToken', tokenFromApi);
     setIsLoggedIn(true);
-    /*  if (isLoggedIn) {
-      props.navigation.navigate('Home');
-    }*/
+  } catch (error) {
+    console.log('doLogin error', error);
+   }
   };
+}; */
 
   const getToken = async () => {
     const userToken = await AsyncStorage.getItem('userToken');
-    console.log('logIn asyncstorage token', userToken);
-    if (userToken === 'valid token value') {
-      setIsLoggedIn(true);
+    console.log('logIn asyncstorage token:', userToken);
+    if (userToken) {
+      const userInfo = await checkToken(userToken);
+      if (userInfo.user_id) {
+        setIsLoggedIn(true);
+      }
     }
   };
 
@@ -32,7 +44,9 @@ const Login = (props) => {
   return (
     <View style={styles.container}>
       <Text>Login</Text>
-      <Button title="Sign in!" onPress={logIn} />
+
+      <LoginForm navigation={navigation} />
+      <RegisterForm navigation={navigation} />
     </View>
   );
 };

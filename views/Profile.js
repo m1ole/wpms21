@@ -11,9 +11,6 @@ const Profile = (props) => {
   const logout = async () => {
     await AsyncStorage.clear();
     setIsLoggedIn(false);
-    /* if (!isLoggedIn) {
-      props.navigation.navigate('Login');
-    }*/
   };
   return (
     <SafeAreaView style={styles.container}>

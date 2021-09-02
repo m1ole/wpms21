@@ -13,8 +13,8 @@ const useMedia = () => {
 
   const loadMedia = async () => {
     try {
-      const response = await fetch(baseUrl + 'media');
-      const mediaIlmanThumbnailia = await response.json();
+      /* const response = await fetch(baseUrl + 'media'); */
+      const mediaIlmanThumbnailia = await dofetch.json();
       const kaikkiTiedot = mediaIlmanThumbnailia.map(async (media) => {
         return await loadSingleMedia(media.file_id);
       });
@@ -37,4 +37,38 @@ const useMedia = () => {
   return {mediaArray, loadSingleMedia, loadMedia};
 };
 
-export {useMedia};
+const useLogin = () => {
+  const login = async (userCredentials) => {
+    const requistOptions = {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: userCredentials,
+    };
+    try {
+      const loginResponse = await dofetch(baseUrl + 'login', requistOptions);
+      return loginResponse;
+    } catch (error) {
+      console.log('login error', error.message);
+    }
+  };
+
+  return {login};
+};
+
+const useUser = () => {
+  const checkToken = async (token) => {
+    const options = {
+      method: 'GET',
+      headers: {'x-access-token': token},
+    };
+    try {
+      const userInfo = dofetch(baseUrl + 'users/user', options);
+      return userInfo;
+    } catch (error) {
+      console.log('checkToken error', error);
+    }
+  };
+  return {checkToken};
+};
+
+export {useMedia, useLogin, useUser};

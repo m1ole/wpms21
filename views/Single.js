@@ -2,7 +2,6 @@ import React from 'react';
 import {StyleSheet, SafeAreaView, Text, Image} from 'react-native';
 import PropTypes from 'prop-types';
 import {uploadsUrl} from '../utils/variables';
-import {DateTime} from 'luxon';
 
 const Single = ({route}) => {
   const {params} = route;
@@ -15,11 +14,6 @@ const Single = ({route}) => {
       />
       <Text>{params.description}</Text>
       <Text>{params.user_id}</Text>
-      <Text>
-        {DateTime.fromISO(params.time_added)
-          .setLocale('fi')
-          .toLocaleString({month: 'long', day: 'numeric', year: 'numeric'})}
-      </Text>
       <Text>{params.media_type}</Text>
     </SafeAreaView>
   );

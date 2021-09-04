@@ -11,21 +11,6 @@ const Login = ({navigation}) => {
   const {setIsLoggedIn} = useContext(MainContext);
   const {checkToken} = useUser();
 
-  /*   const doLogin = async () => {
-    try {
-      const tokenFromApi = await login({
-        username: 'john',
-        password: 'examplepass',
-      });
-    console.log('doLogin reponse', tokenFromApi);
-    await AsyncStorage.setItem('userToken', tokenFromApi);
-    setIsLoggedIn(true);
-  } catch (error) {
-    console.log('doLogin error', error);
-   }
-  };
-}; */
-
   const getToken = async () => {
     const userToken = await AsyncStorage.getItem('userToken');
     console.log('logIn asyncstorage token:', userToken);

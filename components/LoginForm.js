@@ -22,7 +22,6 @@ const LoginForm = ({navigation}) => {
     } catch (error) {
       console.log('doLogin error', error);
     }
-    // navigation.navigate('Home');
   };
 
   return (

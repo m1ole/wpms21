@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {Button, View} from 'react-native';
-import FormTextInput from './formText';
+import FormTextInput from './FormTextInput';
 import useSignUpForm from '../hooks/RegisterHooks';
 
 const RegisterForm = ({navigation}) => {

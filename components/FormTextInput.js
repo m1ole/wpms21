@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {TextInput} from 'react-native';
+import {StyleSheet, TextInput} from 'react-native';
 
 const FormTextInput = ({style, ...otherProps}) => {
   return <TextInput style={[styles.textInput, style]} {...otherProps} />;

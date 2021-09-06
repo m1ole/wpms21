@@ -16,6 +16,8 @@ const Profile = (props) => {
     <SafeAreaView style={styles.container}>
       <Text>Profile</Text>
       <Text>{user.username}</Text>
+      <Text>{user.email}</Text>
+      <Text>{user.fullname}</Text>
       <Button title={'Logout'} onPress={logout} />
     </SafeAreaView>
   );

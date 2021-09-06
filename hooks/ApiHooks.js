@@ -13,14 +13,13 @@ const useMedia = () => {
 
   const loadMedia = async () => {
     try {
-      /* const response = await fetch(baseUrl + 'media'); */
-      const mediaIlmanThumbnailia = await dofetch.json();
+      const mediaIlmanThumbnailia = await dofetch(baseUrl + 'media');
       const kaikkiTiedot = mediaIlmanThumbnailia.map(async (media) => {
         return await loadSingleMedia(media.file_id);
       });
       return Promise.all(kaikkiTiedot);
     } catch (e) {
-      console.log(e.message());
+      console.log('loadMedia', e.message);
     }
   };
 

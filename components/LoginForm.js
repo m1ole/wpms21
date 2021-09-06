@@ -1,6 +1,7 @@
 import React, {useContext} from 'react';
 import PropTypes from 'prop-types';
-import {View, Button} from 'react-native';
+import {View} from 'react-native';
+import {Button} from 'react-native-elements';
 import FormTextInput from './FormTextInput';
 import useLoginForm from '../hooks/LoginHooks';
 import {MainContext} from '../contexts/MainContext';
@@ -39,7 +40,7 @@ const LoginForm = ({navigation}) => {
         secureTextEntry={true}
       />
 
-      <Button title="Login!" onPress={doLogin} />
+      <Button title="Sing In!" onPress={doLogin} />
     </View>
   );
 };

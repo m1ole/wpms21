@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Button, View} from 'react-native';
+import {View} from 'react-native';
+import {Button, Text} from 'react-native-elements';
 import FormTextInput from './FormTextInput';
 import useSignUpForm from '../hooks/RegisterHooks';
 
@@ -11,6 +12,7 @@ const RegisterForm = ({navigation}) => {
 
   return (
     <View>
+      <Text h3>Register</Text>
       <FormTextInput
         autoCapitalize="none"
         placeholder="username"

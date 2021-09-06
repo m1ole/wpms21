@@ -14,7 +14,7 @@ const useMedia = () => {
   const loadMedia = async () => {
     try {
       /* const response = await fetch(baseUrl + 'media'); */
-      const mediaIlmanThumbnailia = await dofetch.json();
+      const mediaIlmanThumbnailia = await dofetch(baseUrl + 'media');
       const kaikkiTiedot = mediaIlmanThumbnailia.map(async (media) => {
         return await loadSingleMedia(media.file_id);
       });

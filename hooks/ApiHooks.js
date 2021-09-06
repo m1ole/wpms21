@@ -1,11 +1,12 @@
 import {useEffect, useState} from 'react';
-import {dofetch} from '../utils/http';
+import {doFetch} from '../utils/http';
 import {baseUrl} from '../utils/variables';
 
 const useMedia = () => {
   const [mediaArray, setMediaArray] = useState([]);
 
   useEffect(() => {
+    // https://scriptverse.academy/tutorials/js-self-invoking-functions.html
     (async () => {
       setMediaArray(await loadMedia());
     })();
@@ -13,20 +14,19 @@ const useMedia = () => {
 
   const loadMedia = async () => {
     try {
-      /* const response = await fetch(baseUrl + 'media'); */
-      const mediaIlmanThumbnailia = await dofetch(baseUrl + 'media');
+      const mediaIlmanThumbnailia = await doFetch(baseUrl + 'media');
       const kaikkiTiedot = mediaIlmanThumbnailia.map(async (media) => {
         return await loadSingleMedia(media.file_id);
       });
       return Promise.all(kaikkiTiedot);
     } catch (e) {
-      console.log(e.message());
+      console.log('loadMedia', e.message);
     }
   };
 
   const loadSingleMedia = async (id) => {
     try {
-      const tiedosto = await dofetch(baseUrl + 'media/' + id);
+      const tiedosto = await doFetch(baseUrl + 'media/' + id);
       return tiedosto;
     } catch (e) {
       console.log('loadSingleMedia', e.message);
@@ -34,24 +34,24 @@ const useMedia = () => {
     }
   };
 
-  return {mediaArray, loadSingleMedia, loadMedia};
+  return {mediaArray, loadMedia, loadSingleMedia};
 };
 
 const useLogin = () => {
   const login = async (userCredentials) => {
-    const requistOptions = {
+    const requestOptions = {
       method: 'POST',
+      // mode: 'no-cors',
       headers: {'Content-Type': 'application/json'},
-      body: userCredentials,
+      body: JSON.stringify(userCredentials),
     };
     try {
-      const loginResponse = await dofetch(baseUrl + 'login', requistOptions);
+      const loginResponse = await doFetch(baseUrl + 'login', requestOptions);
       return loginResponse;
     } catch (error) {
       console.log('login error', error.message);
     }
   };
-
   return {login};
 };
 
@@ -62,13 +62,44 @@ const useUser = () => {
       headers: {'x-access-token': token},
     };
     try {
-      const userInfo = dofetch(baseUrl + 'users/user', options);
+      const userInfo = doFetch(baseUrl + 'users/user', options);
       return userInfo;
     } catch (error) {
       console.log('checkToken error', error);
     }
   };
-  return {checkToken};
+
+  const register = async (userCredentials) => {
+    // https://media.mw.metropolia.fi/wbma/docs/#api-User-PostUser
+    const requestOptions = {
+      method: 'POST',
+      // mode: 'no-cors',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(userCredentials),
+    };
+    try {
+      const registerResponse = await doFetch(baseUrl + 'users', requestOptions);
+      return registerResponse;
+    } catch (error) {
+      console.log('register error', error.message);
+    }
+  };
+
+  return {checkToken, register};
 };
 
-export {useMedia, useLogin, useUser};
+const useTag = () => {
+  const getFilesByTag = async (tag) => {
+    try {
+      const tiedosto = await doFetch(baseUrl + 'tags/' + tag);
+      return tiedosto;
+    } catch (e) {
+      console.log('getFilesByTag', e.message);
+      return {};
+    }
+  };
+
+  return {getFilesByTag};
+};
+
+export {useMedia, useLogin, useUser, useTag};

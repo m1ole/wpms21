@@ -62,11 +62,17 @@ const useUser = () => {
       headers: {'x-access-token': token},
     };
     try {
-      const userInfo = doFetch(baseUrl + 'users/user', options);
+      const userInfo = await doFetch(baseUrl + 'users/user', options);
       return userInfo;
     } catch (error) {
       console.log('checkToken error', error);
     }
+  };
+
+  const checkUsernameAviable = async (username) => {
+    try {
+      const usenameInfo = await doFetch(baseUrl + 'users/username', username);
+    } catch (error) {}
   };
 
   const register = async (userCredentials) => {

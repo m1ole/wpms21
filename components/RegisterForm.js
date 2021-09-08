@@ -1,13 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {Alert, View} from 'react-native';
-import {Button, Text} from 'react-native-elements';
-import FormTextInput from './FormTextInput';
+import {Button, Input} from 'react-native-elements';
 import useSignUpForm from '../hooks/RegisterHooks';
 import {useUser} from '../hooks/ApiHooks';
 
 const RegisterForm = ({navigation}) => {
-  const {inputs, handleInputChange} = useSignUpForm();
+  const {inputs, errors, handleInputChange, checkUsername} = useSignUpForm();
   const {register} = useUser();
 
   const doRegister = async () => {
@@ -23,24 +22,27 @@ const RegisterForm = ({navigation}) => {
 
   return (
     <View>
-      <Text h3>Register</Text>
-      <FormTextInput
+      <Input
         autoCapitalize="none"
         placeholder="username"
         onChangeText={(txt) => handleInputChange('username', txt)}
+        onEndEditing={(event) => {
+          checkUsername(event.nativeEvent.text);
+        }}
+        errorMessage={errors.username}
       />
-      <FormTextInput
+      <Input
         autoCapitalize="none"
         placeholder="password"
         onChangeText={(txt) => handleInputChange('password', txt)}
         secureTextEntry={true}
       />
-      <FormTextInput
+      <Input
         autoCapitalize="none"
         placeholder="email"
         onChangeText={(txt) => handleInputChange('email', txt)}
       />
-      <FormTextInput
+      <Input
         autoCapitalize="none"
         placeholder="full name"
         onChangeText={(txt) => handleInputChange('full_name', txt)}

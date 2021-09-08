@@ -1,4 +1,4 @@
-import React, {useContext, useEffect} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {StyleSheet, KeyboardAvoidingView, Platform} from 'react-native';
 import PropTypes from 'prop-types';
 import {MainContext} from '../contexts/MainContext';
@@ -7,12 +7,12 @@ import {useUser} from '../hooks/ApiHooks';
 import RegisterForm from '../components/RegisterForm';
 import LoginForm from '../components/LoginForm';
 import {ImageBackground} from 'react-native';
-import {Card} from 'react-native-elements';
+import {Card, Text} from 'react-native-elements';
 
 const Login = ({navigation}) => {
   const {setIsLoggedIn, setUser} = useContext(MainContext);
   const {checkToken} = useUser();
-  // console.log('Login isLoggedIn', isLoggedIn);
+  const [registerFormToggle, setRegisterFormToggle] = useState(false);
 
   const getToken = async () => {
     const userToken = await AsyncStorage.getItem('userToken');
@@ -39,13 +39,18 @@ const Login = ({navigation}) => {
         /* source={require('../assets/splash.png')} */
         style={styles.image}
       >
-        <Card>
-          <Card.Title h4>Login</Card.Title>
-          <LoginForm navigation={navigation} />
-          <Card.Divider />
-          <Card.Title h4>Register</Card.Title>
-          <RegisterForm navigation={navigation} />
-        </Card>
+        {registerFormToggle ? (
+          <Card>
+            <Card.Title h4>Register</Card.Title>
+            <RegisterForm navigation={navigation} />
+          </Card>
+        ) : (
+          <Card>
+            <Card.Title h4>Login</Card.Title>
+            <LoginForm navigation={navigation} />
+          </Card>
+        )}
+        onPress = ({!registerFormToggle})
       </ImageBackground>
     </KeyboardAvoidingView>
   );

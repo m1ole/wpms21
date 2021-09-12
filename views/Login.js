@@ -6,8 +6,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useUser} from '../hooks/ApiHooks';
 import RegisterForm from '../components/RegisterForm';
 import LoginForm from '../components/LoginForm';
-import {ImageBackground} from 'react-native';
-import {Card, Text} from 'react-native-elements';
+import {Card, ListItem, Text} from 'react-native-elements';
 
 const Login = ({navigation}) => {
   const {setIsLoggedIn, setUser} = useContext(MainContext);
@@ -35,23 +34,31 @@ const Login = ({navigation}) => {
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={styles.container}
     >
-      <ImageBackground
-        /* source={require('../assets/splash.png')} */
-        style={styles.image}
+      {registerFormToggle ? (
+        <Card>
+          <Card.Title h4>Register</Card.Title>
+          <RegisterForm navigation={navigation} />
+        </Card>
+      ) : (
+        <Card>
+          <Card.Title h4>Login</Card.Title>
+          <LoginForm navigation={navigation} />
+        </Card>
+      )}
+      <ListItem
+        onPress={() => {
+          setRegisterFormToggle(!registerFormToggle);
+        }}
       >
-        {registerFormToggle ? (
-          <Card>
-            <Card.Title h4>Register</Card.Title>
-            <RegisterForm navigation={navigation} />
-          </Card>
-        ) : (
-          <Card>
-            <Card.Title h4>Login</Card.Title>
-            <LoginForm navigation={navigation} />
-          </Card>
-        )}
-        onPress = ({!registerFormToggle})
-      </ImageBackground>
+        <ListItem.Content>
+          <Text style={styles.text}>
+            {registerFormToggle
+              ? 'Already an account? Login here!'
+              : 'No account ? Register Here!'}
+          </Text>
+        </ListItem.Content>
+        <ListItem.Chevron />
+      </ListItem>
     </KeyboardAvoidingView>
   );
 };

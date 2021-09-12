@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
 });
 
 Home.propTypes = {
-  navigation: PropTypes.object,
+  navigation: PropTypes.object.isRequired,
 };
 
 export default Home;

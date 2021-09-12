@@ -26,6 +26,7 @@ const TabScreen = () => {
               break;
             case 'Profile':
               iconName = 'account-box';
+              break;
           }
           return <Icon name={iconName} size={size} color={color} />;
         },

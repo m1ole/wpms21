@@ -6,7 +6,6 @@ const useMedia = () => {
   const [mediaArray, setMediaArray] = useState([]);
 
   useEffect(() => {
-    // https://scriptverse.academy/tutorials/js-self-invoking-functions.html
     (async () => {
       setMediaArray(await loadMedia());
     })();
@@ -41,7 +40,6 @@ const useLogin = () => {
   const login = async (userCredentials) => {
     const requestOptions = {
       method: 'POST',
-      // mode: 'no-cors',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify(userCredentials),
     };
@@ -69,17 +67,20 @@ const useUser = () => {
     }
   };
 
-  const checkUsernameAviable = async (username) => {
+  const checkUsernameAvailable = async (username) => {
     try {
-      const usenameInfo = await doFetch(baseUrl + 'users/username', username);
-    } catch (error) {}
+      const usernameInfo = await doFetch(
+        baseUrl + 'users/username/' + username
+      );
+      return usernameInfo.available;
+    } catch (error) {
+      console.log('checkUsername error', error);
+    }
   };
 
   const register = async (userCredentials) => {
-    // https://media.mw.metropolia.fi/wbma/docs/#api-User-PostUser
     const requestOptions = {
       method: 'POST',
-      // mode: 'no-cors',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify(userCredentials),
     };
@@ -91,7 +92,7 @@ const useUser = () => {
     }
   };
 
-  return {checkToken, register};
+  return {checkToken, register, checkUsernameAvailable};
 };
 
 const useTag = () => {

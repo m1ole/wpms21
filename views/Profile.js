@@ -3,8 +3,9 @@ import PropTypes from 'prop-types';
 import {StyleSheet, SafeAreaView, Text, ActivityIndicator} from 'react-native';
 import {MainContext} from '../contexts/MainContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {Card, ListItem, Avatar} from 'react-native-elements';
+import {Card, ListItem} from 'react-native-elements';
 import {useTag} from '../hooks/ApiHooks';
+import {Avatar} from 'react-native-elements/dist/avatar/Avatar';
 import {uploadsUrl} from '../utils/variables';
 
 const Profile = (props) => {
@@ -41,7 +42,7 @@ const Profile = (props) => {
           <Text>{user.email}</Text>
         </ListItem>
         <ListItem>
-          <Avatar icon={{name: 'user', type: 'font-awesom', color: 'black'}} />
+          <Avatar icon={{name: 'user', type: 'font-awesome', color: 'black'}} />
           <Text>{user.full_name}</Text>
         </ListItem>
         <ListItem bottomDivider onPress={logout}>

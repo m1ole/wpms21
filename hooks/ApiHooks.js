@@ -1,20 +1,22 @@
 import axios from 'axios';
 import {useEffect, useState} from 'react';
 import {doFetch} from '../utils/http';
-import {baseUrl} from '../utils/variables';
+import {appID, baseUrl} from '../utils/variables';
 
 const useMedia = () => {
   const [mediaArray, setMediaArray] = useState([]);
+  const [loading, setloading] = useState(false);
+  const [update, setUpdate] = useState(0);
 
   useEffect(() => {
     (async () => {
       setMediaArray(await loadMedia());
     })();
-  }, []);
+  }, [update]);
 
   const loadMedia = async () => {
     try {
-      const mediaIlmanThumbnailia = await doFetch(baseUrl + 'media');
+      const mediaIlmanThumbnailia = await useTag().getFilesByTag(appID);
       const kaikkiTiedot = mediaIlmanThumbnailia.map(async (media) => {
         return await loadSingleMedia(media.file_id);
       });
@@ -36,6 +38,7 @@ const useMedia = () => {
 
   const uploadMedia = async (formData, token) => {
     try {
+      setloading(true);
       const options = {
         method: 'POST',
         headers: {'x-access-token': token},
@@ -43,12 +46,24 @@ const useMedia = () => {
       };
       const result = await axios(baseUrl + 'media/', options);
       console.log('axios', result.data);
+      if (result.data) {
+        setUpdate(update + 1);
+        return result.data;
+      }
     } catch (e) {
-      console.log('axios error', e.message);
+      throw new Error(e.message);
+    } finally {
+      setloading(false);
     }
   };
 
-  return {mediaArray, loadMedia, loadSingleMedia, uploadMedia};
+  return {
+    mediaArray,
+    loading,
+    loadMedia,
+    loadSingleMedia,
+    uploadMedia,
+  };
 };
 
 const useLogin = () => {
@@ -124,4 +139,19 @@ const useTag = () => {
   return {getFilesByTag};
 };
 
-export {useMedia, useLogin, useUser, useTag};
+// eslint-disable-next-line camelcase
+const addTag = async (file_id, tag, token) => {
+  const options = {
+    method: 'POST',
+    headers: {'x-access-token': token, 'Content-Type': 'application/json'},
+    body: JSON.stringify({file_id, tag}),
+  };
+  try {
+    const tagInfo = await doFetch(baseUrl + 'tag', options);
+    return tagInfo;
+  } catch (e) {
+    throw new Error(e.message);
+  }
+};
+
+export {useMedia, useLogin, useUser, useTag, addTag};

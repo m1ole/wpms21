@@ -10,7 +10,7 @@ import {uploadsUrl} from '../utils/variables';
 
 const Profile = (props) => {
   const {setIsLoggedIn, user} = useContext(MainContext);
-  const [avatar, setAvatar] = useState('https://placekitten.com/400/400');
+  const [avatar, setAvatar] = useState('https://placekitten.com/300/300');
 
   const {getFilesByTag} = useTag();
 

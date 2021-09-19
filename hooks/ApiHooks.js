@@ -1,12 +1,12 @@
-import axios from 'axios';
-import {useEffect, useState} from 'react';
+import {useContext, useEffect, useState} from 'react';
+import {MainContext} from '../contexts/MainContext';
 import {doFetch} from '../utils/http';
 import {appID, baseUrl} from '../utils/variables';
 
 const useMedia = () => {
   const [mediaArray, setMediaArray] = useState([]);
   const [loading, setloading] = useState(false);
-  const [update, setUpdate] = useState(0);
+  const {update} = useContext(MainContext);
 
   useEffect(() => {
     (async () => {
@@ -44,12 +44,8 @@ const useMedia = () => {
         headers: {'x-access-token': token},
         data: formData,
       };
-      const result = await axios(baseUrl + 'media/', options);
-      console.log('axios', result.data);
-      if (result.data) {
-        setUpdate(update + 1);
-        return result.data;
-      }
+      const result = await doFetch(baseUrl + 'media', options);
+      return result;
     } catch (e) {
       throw new Error(e.message);
     } finally {
@@ -136,22 +132,27 @@ const useTag = () => {
     }
   };
 
-  return {getFilesByTag};
-};
-
-// eslint-disable-next-line camelcase
-const addTag = async (file_id, tag, token) => {
-  const options = {
-    method: 'POST',
-    headers: {'x-access-token': token, 'Content-Type': 'application/json'},
-    body: JSON.stringify({file_id, tag}),
+  // eslint-disable-next-line camelcase
+  const addTag = async (file_id, tag, token) => {
+    const options = {
+      method: 'POST',
+      headers: {
+        'x-access-token': token,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({file_id, tag}),
+    };
+    // console.log('optiot', options);
+    try {
+      const tagInfo = await doFetch(baseUrl + 'tags', options);
+      return tagInfo;
+    } catch (error) {
+      // console.log('addTag error', error);
+      throw new Error(error.message);
+    }
   };
-  try {
-    const tagInfo = await doFetch(baseUrl + 'tag', options);
-    return tagInfo;
-  } catch (e) {
-    throw new Error(e.message);
-  }
+
+  return {getFilesByTag, addTag};
 };
 
-export {useMedia, useLogin, useUser, useTag, addTag};
+export {useMedia, useLogin, useUser, useTag};

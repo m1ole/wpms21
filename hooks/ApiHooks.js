@@ -3,20 +3,29 @@ import {MainContext} from '../contexts/MainContext';
 import {doFetch} from '../utils/http';
 import {appID, baseUrl} from '../utils/variables';
 
-const useMedia = () => {
+const useMedia = (ownFiles) => {
   const [mediaArray, setMediaArray] = useState([]);
-  const [loading, setloading] = useState(false);
-  const {update} = useContext(MainContext);
+  const [loading, setLoading] = useState(false);
+  const {update, user} = useContext(MainContext);
 
   useEffect(() => {
+    // https://scriptverse.academy/tutorials/js-self-invoking-functions.html
     (async () => {
       setMediaArray(await loadMedia());
+      // console.log('useMedia useEffect', mediaArray);
     })();
   }, [update]);
 
   const loadMedia = async () => {
     try {
-      const mediaIlmanThumbnailia = await useTag().getFilesByTag(appID);
+      let mediaIlmanThumbnailia = await useTag().getFilesByTag(appID);
+
+      if (ownFiles) {
+        mediaIlmanThumbnailia = mediaIlmanThumbnailia.filter(
+          (item) => item.user_id === user.user_id
+        );
+      }
+
       const kaikkiTiedot = mediaIlmanThumbnailia.map(async (media) => {
         return await loadSingleMedia(media.file_id);
       });
@@ -38,18 +47,61 @@ const useMedia = () => {
 
   const uploadMedia = async (formData, token) => {
     try {
-      setloading(true);
+      setLoading(true);
       const options = {
         method: 'POST',
-        headers: {'x-access-token': token},
-        data: formData,
+        headers: {
+          'x-access-token': token,
+        },
+        body: formData,
       };
       const result = await doFetch(baseUrl + 'media', options);
       return result;
     } catch (e) {
+      console.log('uploadMedia error', e);
       throw new Error(e.message);
     } finally {
-      setloading(false);
+      setLoading(false);
+    }
+  };
+
+  const modifyMedia = async (data, token, id) => {
+    try {
+      setLoading(true);
+      const options = {
+        method: 'PUT',
+        headers: {
+          'x-access-token': token,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      };
+      const result = await doFetch(baseUrl + 'media/' + id, options);
+      return result;
+    } catch (e) {
+      console.log('modifyMedia error', e);
+      throw new Error(e.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const deleteMedia = async (id, token) => {
+    try {
+      setLoading(true);
+      const options = {
+        method: 'DELETE',
+        headers: {
+          'x-access-token': token,
+        },
+      };
+      const result = await doFetch(baseUrl + 'media/' + id, options);
+      return result;
+    } catch (e) {
+      console.log('deleteMedia error', e);
+      throw new Error(e.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -59,6 +111,8 @@ const useMedia = () => {
     loadMedia,
     loadSingleMedia,
     uploadMedia,
+    deleteMedia,
+    modifyMedia,
   };
 };
 
@@ -66,6 +120,7 @@ const useLogin = () => {
   const login = async (userCredentials) => {
     const requestOptions = {
       method: 'POST',
+      // mode: 'no-cors',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify(userCredentials),
     };
@@ -105,8 +160,10 @@ const useUser = () => {
   };
 
   const register = async (userCredentials) => {
+    // https://media.mw.metropolia.fi/wbma/docs/#api-User-PostUser
     const requestOptions = {
       method: 'POST',
+      // mode: 'no-cors',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify(userCredentials),
     };

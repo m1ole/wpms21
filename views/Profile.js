@@ -1,16 +1,17 @@
 import React, {useContext, useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
-import {StyleSheet, SafeAreaView, Text, ActivityIndicator} from 'react-native';
+import {StyleSheet, Text, ActivityIndicator} from 'react-native';
 import {MainContext} from '../contexts/MainContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {Card, ListItem} from 'react-native-elements';
 import {useTag} from '../hooks/ApiHooks';
-import {Avatar} from 'react-native-elements/dist/avatar/Avatar';
 import {uploadsUrl} from '../utils/variables';
+import {Avatar} from 'react-native-elements/dist/avatar/Avatar';
+import {ScrollView} from 'react-native-gesture-handler';
 
-const Profile = (props) => {
+const Profile = ({navigation}) => {
   const {setIsLoggedIn, user} = useContext(MainContext);
-  const [avatar, setAvatar] = useState('https://placekitten.com/300/300');
+  const [avatar, setAvatar] = useState('https://placekitten.com/400/400');
 
   const {getFilesByTag} = useTag();
 
@@ -27,7 +28,7 @@ const Profile = (props) => {
     setIsLoggedIn(false);
   };
   return (
-    <SafeAreaView style={styles.container}>
+    <ScrollView>
       <Card>
         <Card.Title>
           <Text h1>{user.username}</Text>
@@ -45,6 +46,18 @@ const Profile = (props) => {
           <Avatar icon={{name: 'user', type: 'font-awesome', color: 'black'}} />
           <Text>{user.full_name}</Text>
         </ListItem>
+        <ListItem
+          bottomDivider
+          onPress={() => {
+            navigation.navigate('My Files');
+          }}
+        >
+          <Avatar icon={{name: 'logout', color: 'black'}} />
+          <ListItem.Content>
+            <ListItem.Title>My Files</ListItem.Title>
+          </ListItem.Content>
+          <ListItem.Chevron />
+        </ListItem>
         <ListItem bottomDivider onPress={logout}>
           <Avatar icon={{name: 'logout', color: 'black'}} />
           <ListItem.Content>
@@ -53,7 +66,7 @@ const Profile = (props) => {
           <ListItem.Chevron />
         </ListItem>
       </Card>
-    </SafeAreaView>
+    </ScrollView>
   );
 };
 

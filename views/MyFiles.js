@@ -6,7 +6,6 @@ import PropTypes from 'prop-types';
 
 const MyFiles = ({navigation}) => {
   const {mediaArray} = useMedia(true);
-  // console.log('MyFiles: mediaArray', mediaArray);
   return (
     <FlatList
       data={mediaArray.reverse()}

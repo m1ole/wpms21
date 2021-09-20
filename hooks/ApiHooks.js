@@ -9,10 +9,8 @@ const useMedia = (ownFiles) => {
   const {update, user} = useContext(MainContext);
 
   useEffect(() => {
-    // https://scriptverse.academy/tutorials/js-self-invoking-functions.html
     (async () => {
       setMediaArray(await loadMedia());
-      // console.log('useMedia useEffect', mediaArray);
     })();
   }, [update]);
 
@@ -160,18 +158,16 @@ const useUser = () => {
   };
 
   const register = async (userCredentials) => {
-    // https://media.mw.metropolia.fi/wbma/docs/#api-User-PostUser
     const requestOptions = {
       method: 'POST',
-      // mode: 'no-cors',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify(userCredentials),
     };
     try {
       const registerResponse = await doFetch(baseUrl + 'users', requestOptions);
       return registerResponse;
-    } catch (error) {
-      console.log('register error', error.message);
+    } catch (e) {
+      console.log('register error', e.message);
     }
   };
 
@@ -199,13 +195,11 @@ const useTag = () => {
       },
       body: JSON.stringify({file_id, tag}),
     };
-    // console.log('optiot', options);
     try {
       const tagInfo = await doFetch(baseUrl + 'tags', options);
       return tagInfo;
-    } catch (error) {
-      // console.log('addTag error', error);
-      throw new Error(error.message);
+    } catch (e) {
+      throw new Error(e.message);
     }
   };
 

@@ -118,7 +118,6 @@ const useLogin = () => {
   const login = async (userCredentials) => {
     const requestOptions = {
       method: 'POST',
-      // mode: 'no-cors',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify(userCredentials),
     };
@@ -143,6 +142,19 @@ const useUser = () => {
       return userInfo;
     } catch (error) {
       console.log('checkToken error', error);
+    }
+  };
+
+  const getUserInfo = async (token, userId) => {
+    const options = {
+      method: 'GET',
+      headers: {'x-access-token': token},
+    };
+    try {
+      const userInfo = await doFetch(baseUrl + 'users/' + userId, options);
+      return userInfo;
+    } catch (e) {
+      console.log('checkToken error', e);
     }
   };
 
@@ -171,7 +183,7 @@ const useUser = () => {
     }
   };
 
-  return {checkToken, register, checkUsernameAvailable};
+  return {checkToken, register, checkUsernameAvailable, getUserInfo};
 };
 
 const useTag = () => {

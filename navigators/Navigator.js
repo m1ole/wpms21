@@ -28,10 +28,10 @@ const TabScreen = () => {
               iconName = 'home';
               break;
             case 'Profile':
-              iconName = 'account-box';
+              iconName = 'supervisor-account';
               break;
             case 'Upload':
-              iconName = 'account-box';
+              iconName = 'file-upload';
               break;
           }
           return <Icon name={iconName} size={size} color={color} />;

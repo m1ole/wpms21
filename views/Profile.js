@@ -17,9 +17,13 @@ const Profile = ({navigation}) => {
 
   useEffect(() => {
     (async () => {
-      const file = await getFilesByTag('avatar_' + user.user_id);
-      console.log('file', file);
-      setAvatar(uploadsUrl + file.pop().filename);
+      try {
+        const file = await getFilesByTag('avatar_' + user.user_id);
+        console.log('file', file);
+        setAvatar(uploadsUrl + file.pop().filename);
+      } catch (e) {
+        console.log('useEffect', e.message);
+      }
     })();
   }, [user]);
 

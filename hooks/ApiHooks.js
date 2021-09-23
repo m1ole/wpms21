@@ -145,13 +145,15 @@ const useUser = () => {
     }
   };
 
-  const getUserInfo = async (token, userId) => {
+  const getUserInfo = async (userId, token) => {
     const options = {
       method: 'GET',
       headers: {'x-access-token': token},
     };
     try {
       const userInfo = await doFetch(baseUrl + 'users/' + userId, options);
+      console.log('getUserInfo', getUserInfo, userId);
+      console.log('getUserInfo', userId);
       return userInfo;
     } catch (e) {
       console.log('checkToken error', e);

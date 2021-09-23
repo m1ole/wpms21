@@ -15,8 +15,13 @@ const Single = ({route}) => {
   const videoRef = useRef(null);
 
   const getOwnerInfo = async () => {
-    const token = await AsyncStorage.getItem('userToken');
-    setOwnerInfo(await getUserInfo(params.user_id, token));
+    try {
+      const token = await AsyncStorage.getItem('userToken');
+      setOwnerInfo(await getUserInfo(params.user_id, token));
+      console.log('getOwnerinfo', ownerInfo);
+    } catch (e) {
+      console.log('getOwnerinfo', e.message);
+    }
   };
 
   useEffect(() => {

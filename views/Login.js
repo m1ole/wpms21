@@ -1,5 +1,10 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {StyleSheet, KeyboardAvoidingView, Platform} from 'react-native';
+import {
+  StyleSheet,
+  KeyboardAvoidingView,
+  Platform,
+  ImageBackground,
+} from 'react-native';
 import PropTypes from 'prop-types';
 import {MainContext} from '../contexts/MainContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -38,31 +43,43 @@ const Login = ({navigation}) => {
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={styles.container}
     >
-      {registerFormToggle ? (
-        <Card>
-          <Card.Title h4>Register</Card.Title>
-          <RegisterForm navigation={navigation} />
-        </Card>
-      ) : (
-        <Card>
-          <Card.Title h4>Login</Card.Title>
-          <LoginForm navigation={navigation} />
-        </Card>
-      )}
-      <ListItem
-        onPress={() => {
-          setRegisterFormToggle(!registerFormToggle);
-        }}
+      <ImageBackground
+        // eslint-disable-next-line no-undef
+        source={require('../assets/game_bg.png')}
+        style={styles.image}
       >
-        <ListItem.Content>
-          <Text style={styles.text}>
-            {registerFormToggle
-              ? 'Already an account? Login here!'
-              : 'No account ? Register Here!'}
-          </Text>
-        </ListItem.Content>
-        <ListItem.Chevron />
-      </ListItem>
+        <Card style={styles.Card}>
+          <Text style={styles.header}>MY APP</Text>
+          {registerFormToggle ? (
+            <Card>
+              <Card.Title h4>Register</Card.Title>
+              <RegisterForm navigation={navigation} />
+            </Card>
+          ) : (
+            <Card>
+              <Card.Title h4>Login</Card.Title>
+              <LoginForm navigation={navigation} />
+            </Card>
+          )}
+          <ListItem
+            onPress={() => {
+              setRegisterFormToggle(!registerFormToggle);
+            }}
+          >
+            <Card.Divider />
+            <Card.Divider />
+            <ListItem.Content>
+              <Text style={styles.text}>
+                {registerFormToggle
+                  ? 'Already an account? Login here!'
+                  : 'No account ? Register Here!'}
+              </Text>
+            </ListItem.Content>
+
+            <ListItem.Chevron />
+          </ListItem>
+        </Card>
+      </ImageBackground>
     </KeyboardAvoidingView>
   );
 };
@@ -76,6 +93,18 @@ const styles = StyleSheet.create({
     flex: 1,
     resizeMode: 'cover',
     justifyContent: 'center',
+  },
+  header: {
+    fontWeight: 'bold',
+    fontSize: 40,
+    textAlign: 'center',
+    margin: 20,
+  },
+  text: {
+    fontWeight: 'bold',
+  },
+  Card: {
+    opacity: 50,
   },
 });
 

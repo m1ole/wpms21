@@ -6,7 +6,6 @@ import {useMedia} from '../hooks/ApiHooks';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {MainContext} from '../contexts/MainContext';
 import {timeSince} from '../utils/dateFunctions';
-import {Card} from 'react-native-elements/dist/card/Card';
 
 const ListItem = ({singleMedia, navigation, showButtons}) => {
   const {update, setUpdate} = useContext(MainContext);
